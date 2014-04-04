@@ -19,7 +19,7 @@ server.use(prerender.updateUrls())
 server.use(prerender.httpHeaders());
 
 server.use(prerender.minifier());
-//server.use(prerender.inMemoryHtmlCache());
+server.use(prerender.inMemoryHtmlCache());
 server.use(prerender.s3HtmlCache());
 
 server.start();
