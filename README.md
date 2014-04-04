@@ -108,13 +108,30 @@ Each plugin can implement any of the plugin methods:
 
 ####`beforePhantomRequest(req, res, next)`
 
-####`onPhantomPageCreate(page, context, next)`
+####`onPhantomPageCreate(req, res, next)`
 
-####`afterPhantomRequest(page, context, next)`
+####`afterPhantomRequest(req, res, next)`
 
 ####`beforeSend(req, res, next)`
 
 ## Available plugins
+
+### basicAuth
+
+If you want to only allow access to your Prerender server from authorized parties, enable the basic auth plugin.
+
+You will need to add the `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` environment variables.
+```
+export BASIC_AUTH_USERNAME=prerender
+export BASIC_AUTH_PASSWORD=test
+```
+
+Then make sure to pass the basic authentication headers (password base64 encoded).
+
+```
+curl -u prerender:wrong http://localhost:1337/http://example.com -> 401
+curl -u prerender:test http://localhost:1337/http://example.com -> 200
+```
 
 ### removeScriptTags
 
@@ -179,13 +196,27 @@ so that you don't need to export your AWS credentials.
 > You can also export the S3_PREFIX_KEY variable so that the key (which is by default the complete requested URL) is
 prefixed. This is useful if you want to organize the snapshots in the same bucket.
 
+#### Region support
+
+By default, s3HtmlCache works with US regions, if your bucket is localized in another region you can config it with an environment variable : `AWS_REGION`.
+
+```
+$ export AWS_REGION=<region name>
+```
+
+For example :
+
+```
+$ export AWS_REGION=eu-west-1
+```
+
 ### inMemoryHtmlCache
 
 The default is an in memory cache but you can easily change it to any caching system compatible with the `cache-manager` nodejs package.
 
 For example, with the request:
 
-`GET` http://service.prerender.io/https://facebook.com
+`GET` http://service.prerender.io/https://www.facebook.com/
 
 First time: Overall Elapsed:	00:00:03.3174661
 
