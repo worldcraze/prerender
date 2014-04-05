@@ -15,11 +15,11 @@ var server = prerender({
 // server.use(prerender.logger());
 server.use(prerender.removeUserLike())
 server.use(prerender.removeScriptTags());
-server.use(prerender.updateUrls())
+// server.use(prerender.updateUrls())
 server.use(prerender.httpHeaders());
 
-server.use(prerender.minifier());
-server.use(prerender.inMemoryHtmlCache());
+// server.use(prerender.minifier());
+// server.use(prerender.inMemoryHtmlCache());
 server.use(prerender.s3HtmlCache());
 
 server.start();
